@@ -1,0 +1,26 @@
+{
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.import.gradle.enabled": true,
+  "java.import.exclusions": [
+    "**/node_modules/**",
+    "**/node_modules/@react-native/gradle-plugin/**",
+    "**/.gradle/**",
+    "**/android/build/**"
+  ],
+  "java.configuration.updateBuildConfiguration": "disabled",
+  "java.project.importOnFirstTimeStartup": "disabled",
+  "java.project.resourceFilters": [
+    "node_modules",
+    ".gradle",
+    "android/build"
+  ],
+  "files.watcherExclude": {
+    "**/node_modules/@react-native/gradle-plugin/**": true
+  },
+  "files.exclude": {
+    "**/node_modules/@react-native/gradle-plugin/**/.project": true,
+    "**/node_modules/@react-native/gradle-plugin/**/.classpath": true,
+    "**/node_modules/@react-native/gradle-plugin/**/.settings": true,
+    "**/node_modules/@react-native/gradle-plugin/**/bin": true
+  }
+}
