@@ -3,6 +3,6 @@
   "compilerOptions": {
     "types": ["jest"]
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src/store/state.js", "src/store/keyStore.js"],
   "exclude": ["**/node_modules", "**/Pods"]
 }
