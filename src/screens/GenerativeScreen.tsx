@@ -1,18 +1,3 @@
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
-
-// const generativeScreen = () => {
-//   return (
-//     <View>
-//       <Text>generativeScreen</Text>
-//     </View>
-//   )
-// }
-
-// export default generativeScreen
-
-// const styles = StyleSheet.create({})
-
 import React, { useState } from 'react';
 import {
   View,
@@ -24,6 +9,7 @@ import {
 } from 'react-native';
 import { initLlama } from 'llama.rn';
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import { useAuthStore } from '../store/state';
 
 // Ensure this matches the exact filename you uploaded to the folder
 const MODEL_NAME = 'Qwen3.5-2B-Q4_K_M.gguf';
@@ -35,6 +21,9 @@ export default function GenerativeScreen() {
   const [answer, setAnswer] = useState('');
   const [isThinking, setIsThinking] = useState(false);
 
+  function logOut() {
+    useAuthStore.getState().clearAuth();
+  }
   const handleInference = async () => {
     setIsThinking(true);
     setAnswer('');
@@ -110,6 +99,7 @@ export default function GenerativeScreen() {
         disabled={isThinking}
         color="#007AFF"
       />
+      <Button title="logout" onPress={() => logOut()} />
     </ScrollView>
   );
 }

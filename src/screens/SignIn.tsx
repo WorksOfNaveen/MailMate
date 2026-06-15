@@ -1,9 +1,8 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { GOOGLE_WEB_CLIENT_ID } from '@env';
 import { useAuthStore } from '../store/state';
-import { getTkns, saveTkns } from '../store/keyStore';
+import { saveTkns } from '../store/keyStore';
 GoogleSignin.configure({
   webClientId: GOOGLE_WEB_CLIENT_ID,
   offlineAccess: true,
@@ -15,39 +14,6 @@ GoogleSignin.configure({
 const SignIn = () => {
   const isLog = useAuthStore(state => state.isLog);
   const user = useAuthStore(state => state.user);
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const saved = await getTkns();
-        if (saved?.accessTkn) {
-          useAuthStore.getState().save({
-            user: saved.user ?? null,
-            accessTkn: saved.accessTkn,
-          });
-          return;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-
-      try {
-        const res = await GoogleSignin.signInSilently();
-        if (res.type === 'success') {
-          const tokens = await GoogleSignin.getTokens();
-          useAuthStore.getState().save({
-            user: res.data.user,
-            accessTkn: tokens.accessToken,
-          });
-          await saveTkns();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    init();
-  }, []);
-
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
