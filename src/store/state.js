@@ -10,7 +10,7 @@ export const useAuthStore = create((set, get) => ({
   authenticated: false,
   mails: [],
 
-  save: ({ user, accessTkn, refreshTkn }) =>
+  save: ({ user, accessTkn}) =>
     set({
       user,
       accessTkn,

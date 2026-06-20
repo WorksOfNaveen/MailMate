@@ -1,3 +1,10 @@
+export type EmailImage = {
+  attachmentId?: string;
+  mimeType: string;
+  filename?: string;
+  dataUri?: string;
+};
+
 export type Email = {
   id: string;
   subject: string;
@@ -6,18 +13,35 @@ export type Email = {
   snippet: string;
   labels: string[];
   body: string;
+  images: EmailImage[];
 };
 
 export function parseSender(from: string) {
+  const emailMatch = from.match(/<([^>]+)>/);
+  const email = emailMatch?.[1] ?? (from.includes('@') ? from.trim() : '');
   const name =
     from
       .replace(/<[^>]+>/, '')
       .replace(/"/g, '')
-      .trim() || from;
+      .trim() || email || from;
   return {
     name,
+    email,
     initial: name.charAt(0).toUpperCase(),
   };
+}
+
+export function formatDetailDate(dateStr: string) {
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return dateStr;
+
+  return date.toLocaleString([], {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
 }
 
 export function formatDate(dateStr: string) {
@@ -53,6 +77,7 @@ export function avatarColor(name: string) {
   ];
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
+    // eslint-disable-next-line no-bitwise
     hash = name.charCodeAt(i) + ((hash << 5) - hash);
   }
   return colors[Math.abs(hash) % colors.length];

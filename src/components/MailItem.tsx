@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import {
   avatarColor,
@@ -8,14 +8,18 @@ import {
   parseSender,
 } from '../utils/mailItemUtils';
 
-type Props = { item: Email };
+type Props = { item: Email; onPress: () => void };
 
-const MailItem = ({ item }: Props) => {
+const MailItem = ({ item, onPress }: Props) => {
   const unread = isUnread(item.labels);
   const { name, initial } = parseSender(item.from);
 
   return (
-    <View style={styles.row}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [styles.row, pressed && styles.pressed]}
+      android_ripple={{ color: '#F1F3F4' }}
+    >
       <View style={[styles.avatar, { backgroundColor: avatarColor(name) }]}>
         <Text style={styles.avatarText}>{initial}</Text>
       </View>
@@ -42,7 +46,7 @@ const MailItem = ({ item }: Props) => {
           {item.snippet}
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -57,6 +61,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E8EAED',
+  },
+  pressed: {
+    backgroundColor: '#F1F3F4',
   },
   avatar: {
     width: 40,
@@ -90,6 +97,7 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 12,
     color: '#5F6368',
+    flexShrink: 0,
   },
   subject: {
     fontSize: 14,

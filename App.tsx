@@ -8,7 +8,7 @@ import SplashScreen from './src/components/SplashScreen';
 import { useAuthStore } from './src/store/state';
 import { useEffect } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import MailList from './src/screens/MailList';
+import MailStack from './src/navigation/MailStack';
 const Tab = createBottomTabNavigator();
 
 function App() {
@@ -45,9 +45,9 @@ function App() {
 
 function MainTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       {/* <Tab.Screen name="GenScreen" component={GenerativeScreen} /> */}
-      <Tab.Screen name="MailList" component={MailList} />
+      <Tab.Screen name="Mail" component={MailStack} />
     </Tab.Navigator>
   );
 }
