@@ -15,6 +15,7 @@ GoogleSignin.configure({
     'https://www.googleapis.com/auth/gmail.readonly',
     'https://www.googleapis.com/auth/gmail.compose', // match your Cloud Console
   ],
+  offlineAccess: true,
 });
 
 console.log(

@@ -38,16 +38,11 @@ export const useAuthStore = create((set, get) => ({
     });
   },
   setMailsList: async () => {
-    const accessTkn = get().accessTkn;
-    if (!accessTkn) {
-      console.log('[MailMate] setMailsList — no access token, skipping');
-      return;
-    }
-
-    console.log('[MailMate] setMailsList — fetching mail...');
     try {
-      const res = await getRecentMail(accessTkn);
-      console.log('[MailMate] setMailsList — loaded', res.length, 'mails');
+      const { accessToken } = await GoogleSignin.getTokens();
+      set({ accessTkn: accessToken }); // keep store in sync
+      console.log('[MailMate] setMailsList — fetching mail...');
+      const res = await getRecentMail(accessToken);
       set({ mails: res });
     } catch (error) {
       console.log('[MailMate] setMailsList — failed:', error);

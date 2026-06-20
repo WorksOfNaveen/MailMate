@@ -1,6 +1,6 @@
 import { StatusBar, StyleSheet, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import GenerativeScreen from './src/screens/GenerativeScreen';
+// import GenerativeScreen from './src/screens/GenerativeScreen';
 import SignIn from './src/screens/SignIn';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,7 +23,10 @@ function App() {
         console.log('[MailMate] auth init — trying signInSilently');
         const res = await GoogleSignin.signInSilently();
         if (res.type === 'success') {
-          console.log('[MailMate] auth init — silent sign-in OK:', res.data.user.email);
+          console.log(
+            '[MailMate] auth init — silent sign-in OK:',
+            res.data.user.email,
+          );
           const tokens = await GoogleSignin.getTokens();
           useAuthStore.getState().save({
             user: res.data.user,
@@ -33,7 +36,9 @@ function App() {
           return;
         }
 
-        console.log('[MailMate] auth init — silent sign-in failed, trying keychain');
+        console.log(
+          '[MailMate] auth init — silent sign-in failed, trying keychain',
+        );
 
         // fall back to keychains
         const saved = await getTkns();
@@ -70,7 +75,7 @@ function App() {
 function MainTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="GenScreen" component={GenerativeScreen} />
+      {/* <Tab.Screen name="GenScreen" component={GenerativeScreen} /> */}
       <Tab.Screen name="MailList" component={MailList} />
     </Tab.Navigator>
   );
