@@ -15,7 +15,6 @@ import { useAuthStore } from '../store/state';
 const MODEL_NAME = 'Qwen3.5-2B-Q4_K_M.gguf';
 // const MODEL_PATH = `${ReactNativeBlobUtil.fs.dirs.DownloadDir}/${MODEL_NAME}`;
 const MODEL_PATH = `${ReactNativeBlobUtil.fs.dirs.DocumentDir}/Qwen3.5-2B-Q4_K_M.gguf`;
-console.log(ReactNativeBlobUtil.fs.dirs.DocumentDir);
 export default function GenerativeScreen() {
   const [status, setStatus] = useState('Ready to load local model.');
   const [answer, setAnswer] = useState('');
@@ -31,7 +30,6 @@ export default function GenerativeScreen() {
     try {
       // 1. Verify file exists in the public Downloads directory
       const fileExists = await ReactNativeBlobUtil.fs.exists(MODEL_PATH);
-      console.log(fileExists);
       if (!fileExists) {
         setStatus(
           `Error: Could not find "${MODEL_NAME}" in your device's Downloads folder.`,

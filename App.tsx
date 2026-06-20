@@ -7,7 +7,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from './src/components/SplashScreen';
 import { useAuthStore } from './src/store/state';
 import { useEffect } from 'react';
-import { getTkns, saveTkns } from './src/store/keyStore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import MailList from './src/screens/MailList';
 const Tab = createBottomTabNavigator();
@@ -19,39 +18,11 @@ function App() {
   useEffect(() => {
     const init = async () => {
       try {
-        // first try to login through signInSilently
-        console.log('[MailMate] auth init — trying signInSilently');
         const res = await GoogleSignin.signInSilently();
         if (res.type === 'success') {
-          console.log(
-            '[MailMate] auth init — silent sign-in OK:',
-            res.data.user.email,
-          );
-          const tokens = await GoogleSignin.getTokens();
-          useAuthStore.getState().save({
-            user: res.data.user,
-            accessTkn: tokens.accessToken,
-          });
-          await saveTkns();
+          useAuthStore.getState().save({ user: res.data.user });
           return;
         }
-
-        console.log(
-          '[MailMate] auth init — silent sign-in failed, trying keychain',
-        );
-
-        // fall back to keychains
-        const saved = await getTkns();
-        if (saved?.accessTkn) {
-          console.log('[MailMate] auth init — restored token from keychain');
-          useAuthStore.getState().save({
-            user: saved.user ?? null,
-            accessTkn: saved.accessTkn,
-          });
-          return;
-        }
-
-        console.log('[MailMate] auth init — no saved session, show sign-in');
       } catch (error) {
         console.log('[MailMate] auth init — error:', error);
       } finally {

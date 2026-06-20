@@ -78,3 +78,13 @@ yarn-error.log
 !README.md
 
 .env
+
+
+# Env variants (if you add them later)
+.env.local
+.env.*.local
+# Cursor / editor
+.cursor/
+# Logs
+*.log
+npm-debug.log*

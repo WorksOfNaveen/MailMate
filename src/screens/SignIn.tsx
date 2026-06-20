@@ -1,36 +1,21 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-// import { GOOGLE_WEB_CLIENT_ID } from '@env';
 import { useAuthStore } from '../store/state';
-import { saveTkns } from '../store/keyStore';
-// GoogleSignin.configure({
-//   webClientId: GOOGLE_WEB_CLIENT_ID,
-//   offlineAccess: true,
-//   scopes: [
-//     'https://www.googleapis.com/auth/gmail.readonly',
-//     'https://www.googleapis.com/auth/gmail.send',
-//   ],
-// });
+
 const SignIn = () => {
   const isLog = useAuthStore(state => state.isLog);
   const user = useAuthStore(state => state.user);
   const signIn = async () => {
     try {
-      console.log('[MailMate] signIn — starting Google sign-in');
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
       if (response.type === 'cancelled') {
-        console.log('[MailMate] signIn — cancelled by user');
         return;
       }
       const { user: googleUser } = response.data;
-      const tokens = await GoogleSignin.getTokens();
-      console.log('[MailMate] signIn — success:', googleUser.email);
       useAuthStore.getState().save({
         user: googleUser,
-        accessTkn: tokens.accessToken,
       });
-      await saveTkns(); // persist for next app launch
     } catch (e) {
       console.log('[MailMate] signIn — error:', e);
     }

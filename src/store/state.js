@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import * as Keychain from 'react-native-keychain';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { getRecentMail } from './apiCall';
 
@@ -29,7 +28,6 @@ export const useAuthStore = create((set, get) => ({
       authenticated: !get().authenticated,
     }),
   setLogout: async () => {
-    await Keychain.resetGenericPassword();
     await GoogleSignin.signOut();
     set({
       user: null,
@@ -40,8 +38,7 @@ export const useAuthStore = create((set, get) => ({
   setMailsList: async () => {
     try {
       const { accessToken } = await GoogleSignin.getTokens();
-      set({ accessTkn: accessToken }); // keep store in sync
-      console.log('[MailMate] setMailsList — fetching mail...');
+      set({ accessTkn: accessToken });
       const res = await getRecentMail(accessToken);
       set({ mails: res });
     } catch (error) {

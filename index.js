@@ -18,8 +18,4 @@ GoogleSignin.configure({
   offlineAccess: true,
 });
 
-console.log(
-  '[MailMate] app started — logs appear in Metro (npm start --client-logs) or DevTools (press j)',
-);
-
 AppRegistry.registerComponent(appName, () => App);
