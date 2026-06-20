@@ -11,7 +11,14 @@ import { GOOGLE_WEB_CLIENT_ID, GOOGLE_IOS_CLIENT_ID } from '@env';
 GoogleSignin.configure({
   webClientId: GOOGLE_WEB_CLIENT_ID,
   iosClientId: GOOGLE_IOS_CLIENT_ID,
-  scopes: ['profile', 'email'],
+  scopes: [
+    'https://www.googleapis.com/auth/gmail.readonly',
+    'https://www.googleapis.com/auth/gmail.compose', // match your Cloud Console
+  ],
 });
+
+console.log(
+  '[MailMate] app started — logs appear in Metro (npm start --client-logs) or DevTools (press j)',
+);
 
 AppRegistry.registerComponent(appName, () => App);

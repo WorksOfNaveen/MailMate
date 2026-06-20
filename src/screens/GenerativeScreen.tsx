@@ -22,7 +22,7 @@ export default function GenerativeScreen() {
   const [isThinking, setIsThinking] = useState(false);
 
   function logOut() {
-    useAuthStore.getState().clearAuth();
+    useAuthStore.getState().setLogout();
   }
   const handleInference = async () => {
     setIsThinking(true);

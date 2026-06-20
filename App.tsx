@@ -9,6 +9,7 @@ import { useAuthStore } from './src/store/state';
 import { useEffect } from 'react';
 import { getTkns, saveTkns } from './src/store/keyStore';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import MailList from './src/screens/MailList';
 const Tab = createBottomTabNavigator();
 
 function App() {
@@ -19,8 +20,10 @@ function App() {
     const init = async () => {
       try {
         // first try to login through signInSilently
+        console.log('[MailMate] auth init — trying signInSilently');
         const res = await GoogleSignin.signInSilently();
         if (res.type === 'success') {
+          console.log('[MailMate] auth init — silent sign-in OK:', res.data.user.email);
           const tokens = await GoogleSignin.getTokens();
           useAuthStore.getState().save({
             user: res.data.user,
@@ -30,9 +33,12 @@ function App() {
           return;
         }
 
+        console.log('[MailMate] auth init — silent sign-in failed, trying keychain');
+
         // fall back to keychains
         const saved = await getTkns();
         if (saved?.accessTkn) {
+          console.log('[MailMate] auth init — restored token from keychain');
           useAuthStore.getState().save({
             user: saved.user ?? null,
             accessTkn: saved.accessTkn,
@@ -40,9 +46,9 @@ function App() {
           return;
         }
 
-        // if both fails which means fresh login
+        console.log('[MailMate] auth init — no saved session, show sign-in');
       } catch (error) {
-        console.log(error);
+        console.log('[MailMate] auth init — error:', error);
       } finally {
         useAuthStore.getState().setloading(false);
       }
@@ -65,11 +71,12 @@ function MainTabs() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="GenScreen" component={GenerativeScreen} />
+      <Tab.Screen name="MailList" component={MailList} />
     </Tab.Navigator>
   );
 }
 function SignInFunc() {
-  return <Tab.Screen name="SignIn" component={SignIn} />;
+  return <SignIn />;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
